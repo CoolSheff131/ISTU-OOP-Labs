@@ -1,9 +1,6 @@
 package com.main.Classes;
-
 import java.io.Serializable;
-
 public class ArrayOfInt  implements Serializable {
-
 //-------------поля-----------------
     private int []massive;
 //------------------------------------------------------------------------
@@ -13,6 +10,7 @@ public class ArrayOfInt  implements Serializable {
     }
     //----конструктор копирования--------------
     public ArrayOfInt(ArrayOfInt A){
+      // massive=A.massive.clone();
         massive=new int[A.massive.length];
         for (int i=0;i<A.massive.length;i++) {this.massive[i]=A.massive[i];}
     }
@@ -20,11 +18,19 @@ public class ArrayOfInt  implements Serializable {
     public ArrayOfInt(int []massive){
         this.massive=massive;
     }
-
     public void setMassive(int[] massive) {
         this.massive = massive;
     }
-
+    public void setElementMassive(int element,int index){
+        if(index>massive.length-1)
+            index=massive.length-1;
+        this.massive[index]=element;
+    }
+    public int getElementMassive(int index){
+        if(index>massive.length-1)
+            index=massive.length-1;
+        return this.massive[index];
+    }
     //----------задание 1----------------------
     public int[] getMassive() {
         return massive;
