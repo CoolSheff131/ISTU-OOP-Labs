@@ -1,6 +1,11 @@
 package com.main.Classes;
 
-public class TextToRevOrCountVowel {
+import com.main.Interfaces.Tasks;
+
+import java.io.Serializable;
+
+public class TextToRevOrCountVowel implements Serializable {
+
     //-------------поля-----------------
     private String []words;
     //------------------------------------------------------------------------
@@ -16,6 +21,9 @@ public class TextToRevOrCountVowel {
     //---конструктор с входными данными---------
     public TextToRevOrCountVowel(String []words){
         this.words=words;
+    }
+    public TextToRevOrCountVowel(String words){
+        words.split(" ");
     }
     //--------------------------------------
     public void setWords(String[] words) {
@@ -46,7 +54,7 @@ public class TextToRevOrCountVowel {
     }
     //----------задание 2---------------------
     public int GetCountVowelInText(){
-        String txt=words.toString();
+        String txt=toString();
         int kol=0;
         char[] chrtxt=txt.toCharArray();
         for(int i=0;i<chrtxt.length;i++)

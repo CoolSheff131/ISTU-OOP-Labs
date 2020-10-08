@@ -1,7 +1,12 @@
 package com.main.Classes;
+import com.main.Interfaces.InpOut;
+import com.main.Interfaces.Tasks;
+
 import java.io.Serializable;
 public class ArrayOfInt  implements Serializable {
-//-------------поля-----------------
+
+
+    //-------------поля-----------------
     private int []massive;
 //------------------------------------------------------------------------
     //----конструктор без аргументов-----------
@@ -18,6 +23,15 @@ public class ArrayOfInt  implements Serializable {
     public ArrayOfInt(int []massive){
         this.massive=massive;
     }
+    // конструктор со строкой
+    public ArrayOfInt(String[] massive){
+        int[] arr = new int[massive.length];
+        for (int i=0;i< massive.length;i++) {
+            arr[i]= Integer.parseInt(massive[i]);
+        }
+        this.massive=arr;
+    }
+
     public void setMassive(int[] massive) {
         this.massive = massive;
     }
