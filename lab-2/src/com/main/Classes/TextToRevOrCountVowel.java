@@ -1,12 +1,14 @@
 package com.main.Classes;
 
-public class TextToRevOrCountVowel {
+import java.io.Serializable;
+
+public class TextToRevOrCountVowel  implements Serializable {
     //-------------поля-----------------
     private String []words;
     //------------------------------------------------------------------------
     //----конструктор без аргументов-----------
     public TextToRevOrCountVowel(){
-        this.words=new String[]{"qasd","asfd","zxcvcb","1234","65ehet"};
+        this.words=new String[]{"1_Q","2_W","3_E","4_R","5_T"};
     }
     //----конструктор копирования--------------
     public TextToRevOrCountVowel(TextToRevOrCountVowel A){
@@ -45,8 +47,17 @@ public class TextToRevOrCountVowel {
         return ;
     }
     //----------задание 2---------------------
+    @Override
+    public String toString(){
+        String word=new String();
+        for (String i:words)
+            word+=i+" ";
+        return word;
+    }
+
     public int GetCountVowelInText(){
-        String txt=words.toString();
+        String txt=toString();
+        txt=txt.toLowerCase();
         int kol=0;
         char[] chrtxt=txt.toCharArray();
         for(int i=0;i<chrtxt.length;i++)
@@ -54,11 +65,5 @@ public class TextToRevOrCountVowel {
                 case 'a': case'e': case'y':case'u':case'i':case'o': kol++;
             }
         return kol;
-    }
-    public String toString(){
-        String word=new String();
-        for (String i:words)
-            word+=i+" ";
-        return word;
     }
 }
