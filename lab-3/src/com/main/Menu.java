@@ -15,59 +15,71 @@ import java.util.Scanner;
 public class Menu {
 static private Scanner inp;
 static private ArrayList<Tasks> tasks;
-static private ArrayList<InpOut> io;
+static private ArrayList<InpOut> inpOuts;
     static public void starts(){
+        setLists();
+        showTasks();
         do {
-        System.out.println("Выберите какую задачу выбрать");
+        System.out.println("Выберите какую задачу делать");
             try {
-                tasks.get(makeChoice() - 1).doTask();
+                tasks.get(makeChoice()).doTask();
                 break;
             }catch (IndexOutOfBoundsException e){
                 System.out.println("Ошибка ввода.Неверно введен номер задачи");
             }
         }while(true);
     }
+
     static public void showTasks(){
-        System.out.println("список задач");
+        System.out.println("список задач:");
         for(int i=0;i<tasks.size();i++)
-            tasks.get(i).showTask();
+            tasks.get(i).showTask(i+1);
     }
     static public String[] menuVvod(){
+        return menuVvod(false);
+    }
+
+    static public String[] menuVvod(boolean numb){
         System.out.println("Выберите как вводить данные из консоли (1) или из файла (2)");
         do{
             try {
-                return io.get(makeChoice() - 1).vvod();
+                return inpOuts.get(makeChoice()).vvod(numb);
             }catch (IndexOutOfBoundsException e){
                 System.out.println("Ошибка ввода.Неверно введен номер способа ввода");
             }
         }while (true);
     }
     static public void menuVivod(String A){
+        menuVivod(A,false);
+    }
+    static public void menuVivod(String A,boolean numb){
         System.out.println("Выберите как выводить данные в консоль (1) или в файл (2)");
         do{
             try {
-                 io.get(makeChoice()-1).vivod(A);
+                 inpOuts.get(makeChoice()).vivod(A,numb);
                  break;
             }catch (IndexOutOfBoundsException e){
                 System.out.println("Ошибка ввода.Неверно введен номер способа вывода");
             }
         }while (true);
     }
+
     static public void setLists(){
         inp = new Scanner(System.in);
         tasks = new ArrayList<Tasks>();
         tasks.add(new Task1());
         tasks.add(new Task2());
         tasks.add(new Task3());
-        io = new ArrayList<InpOut>();
-        io.add(new IOConsole());
-        io.add(new IOFile());
+        inpOuts = new ArrayList<InpOut>();
+        inpOuts.add(new IOConsole());
+        inpOuts.add(new IOFile());
     }
+
     static private int makeChoice(){
         do {
             try{
-            return Integer.parseInt(inp.next());
-            }catch (NumberFormatException e){
+            return Integer.parseInt(inp.next())-1;
+            }catch (NumberFormatException  e){
                 System.out.println("Ошибка ввода. вы ввели не число");
             }
         }while (true);

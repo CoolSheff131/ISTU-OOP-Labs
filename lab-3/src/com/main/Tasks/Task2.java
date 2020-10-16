@@ -13,7 +13,7 @@ public class Task2 implements Tasks {
     }
 
     @Override
-    public void showTask() {
-        System.out.println("Подсчитайте количество гласных букв в заданном тексте.");
+    public void showTask(int kol) {
+        System.out.println(kol+" Подсчитайте количество гласных букв в заданном тексте.");
     }
 }

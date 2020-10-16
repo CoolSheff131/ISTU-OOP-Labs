@@ -49,13 +49,13 @@ public class ArrayOfInt  implements Serializable {
     public int[] getMassive() {
         return massive;
     }
-    public void ChangeArrayOfNumbers(char znak,int operand){
+    public void ChangeArrayOfNumbers(char znak,int operand) throws NoSuchMethodException ,ArithmeticException{
         switch (znak){
             case '+':for(int i=0;i<massive.length;i++)massive[i]+=operand; break;
             case '-':for(int i=0;i<massive.length;i++)massive[i]-=operand; break;
             case '*':for(int i=0;i<massive.length;i++)massive[i]*=operand; break;
-            case '/':if(operand==0){System.out.print("Деление на ноль! Массив не был изменен\n");return ; }for(int i=0;i<massive.length;i++)massive[i]/=operand; break;
-            default:System.out.print("Неверно введен знак операции! Массив не был изменен\n"); return ;
+            case '/':if(operand==0){throw new ArithmeticException(); }for(int i=0;i<massive.length;i++)massive[i]/=operand; break;
+            default:throw new NoSuchMethodException();
         }
         return;
     }

@@ -9,12 +9,11 @@ b. Подсчитайте количество гласных букв в зад
 c. Переставьте слова в предложении в обратном порядке.
  */
 public class Main {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Menu.setLists();
-        Menu.showTasks();
+    public static void main(String[] args){
+
         Menu.starts();
     }
-//public static  String[] VvodWordsFromConsole() {
+    //public static  String[] VvodWordsFromConsole() {
 //    int kol;
 //    Scanner inp = new Scanner(System.in);
 //    kol = inp.nextInt();

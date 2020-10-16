@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class IOConsole implements InpOut {
     @Override
-    public String[] vvod() {
+    public String[] vvod(boolean numb) {
 
         int kol=0;
         Scanner inp = new Scanner(System.in);
@@ -30,7 +30,7 @@ public class IOConsole implements InpOut {
     }
 
     @Override
-    public void vivod(String txt) {
+    public void vivod(String txt,boolean numb) {
         System.out.println(txt);
     }
 }

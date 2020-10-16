@@ -56,6 +56,7 @@ public class TextToRevOrCountVowel implements Serializable {
     public int GetCountVowelInText(){
         String txt=toString();
         int kol=0;
+        txt=txt.toLowerCase();
         char[] chrtxt=txt.toCharArray();
         for(int i=0;i<chrtxt.length;i++)
             switch (chrtxt[i]){

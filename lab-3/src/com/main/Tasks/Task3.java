@@ -14,7 +14,7 @@ public class Task3 implements Tasks {
     }
 
     @Override
-    public void showTask() {
-        System.out.println("Переставьте слова в предложении в обратном порядке.");
+    public void showTask(int kol) {
+        System.out.println(kol+" Переставьте слова в предложении в обратном порядке.");
     }
 }
