@@ -53,7 +53,9 @@ public class ShopEngine {
             System.out.println("Магазин пуст");
         return txt;
     }
-
+    public static void clearEng(){
+        engines.clear();
+    }
     public static ArrayList<Engine> getEngines() {
         return engines;
     }

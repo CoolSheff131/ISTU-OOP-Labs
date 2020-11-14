@@ -8,26 +8,28 @@ import root.ShopEngine;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Graphica extends JFrame {
 
     private JDialog dialog;
 
+    private ArrayList<ItemListEng> alleng=new ArrayList<>();
 //компоненты главной
 
     private JPanel selectPanel;
 
     private JButton chooseAddButton;
     private JButton chooseRemoveBotton;
-    //private JButton chooseShowBotton;
+    private JButton chooseSearchButton;
+    private JButton chooseCancelButton;
+    private JButton showAllEngine;
     private JScrollPane scrollPane;
 //компоненты добавления
     private Engine eng;
     private JPanel allEnginePanel;
+    private boolean firstDel=true;
 
     public Graphica(){
 
@@ -42,14 +44,14 @@ public class Graphica extends JFrame {
     private void setMenubar(){
 
         JMenuBar menuBar=new JMenuBar();
-        menuBar.add(createViewMenu());
         menuBar.add(createFileMenu());
+        menuBar.add(createViewMenu());
         // Подключаем меню к интерфейсу приложения
         setJMenuBar(menuBar);
 
     }
 
-    private JMenu createViewMenu() {
+    private JMenu createFileMenu() {
         JMenu file = new JMenu("Файл");
         JMenuItem open = new JMenuItem("Открыть");
         JMenuItem save = new JMenuItem("Сохранить");
@@ -63,6 +65,8 @@ public class Graphica extends JFrame {
             JFileChooser fileopen =new JFileChooser();
             int ret=fileopen.showOpenDialog(Graphica.this);
             if(ret==JFileChooser.APPROVE_OPTION){
+                alleng.clear();
+                ShopEngine.clearEng();
                 File openedfile = fileopen.getSelectedFile();
                 try (BufferedReader br=new BufferedReader(new FileReader(openedfile))){
                     String s;
@@ -116,7 +120,7 @@ public class Graphica extends JFrame {
         return file;
     }
 
-    private JMenu createFileMenu() {
+    private JMenu createViewMenu() {
         JMenu viewMenu = new JMenu("Вид");
 
         JCheckBoxMenuItem line  = new JCheckBoxMenuItem("Линейка");
@@ -140,7 +144,6 @@ public class Graphica extends JFrame {
         return viewMenu;
     }
 
-
     private void setMainPanel(){
 
         Font f1 = new Font("Comic Sans MS", Font.BOLD, 40);
@@ -152,11 +155,15 @@ public class Graphica extends JFrame {
         allEnginePanel.setLayout(new BoxLayout(allEnginePanel,BoxLayout.Y_AXIS));
 
         chooseAddButton =new JButton("Добавить двигатель");
-        chooseRemoveBotton=new JButton("Убрать двигатель");
-        //chooseShowBotton=new JButton("Показать двигатель");
+        chooseRemoveBotton=new JButton("Выбрать Убрать двигатель");
+        chooseSearchButton=new JButton("Поиск двигателей");
+        chooseCancelButton=new JButton("отмена");
+        showAllEngine = new JButton("Показать все");
 
-        chooseRemoveBotton.setEnabled(false);
+        chooseCancelButton.setVisible(false);
+        showAllEngine.setVisible(false);
 
+        chooseRemoveBotton.setEnabled(true);
         scrollPane=new JScrollPane(allEnginePanel);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -171,39 +178,110 @@ public class Graphica extends JFrame {
 
         selectPanel.add(chooseAddButton);
         selectPanel.add(chooseRemoveBotton);
-        //selectPanel.add(chooseShowBotton);
+        selectPanel.add(chooseCancelButton);
+        selectPanel.add(chooseSearchButton);
+        selectPanel.add(showAllEngine);
         selectPanel.setVisible(true);
 
         add(selectPanel, BorderLayout.CENTER);
     }
 
     private void addsEngToList(Engine eng){
-        ItemListEng item=new ItemListEng(eng);
-        allEnginePanel.add(item);
+        alleng.add(new ItemListEng(eng));
         ShopEngine.add(eng);
+        addAllEnginListToPanel();
+
+    }
+    private void addAllEnginListToPanel(){
+        allEnginePanel.removeAll();
+        for(ItemListEng i:alleng){
+        allEnginePanel.add(i);
+        scrollPane.revalidate();
+        }
+    }
+    private void addOneItemToPanel(ItemListEng item){
+        allEnginePanel.add(item);
         scrollPane.revalidate();
     }
+
     private void addListeners(){
 
         chooseAddButton.addActionListener((a)->{
-            AddMenu addMenu=new AddMenu(this);
+            AddJDialog addMenu=new AddJDialog(this);
             Engine eng = addMenu.ret();
             if(eng!=null)
             addsEngToList(eng);
         });
 
-//        chooseShowBotton.addActionListener((a)->{
-//            dialog = new JDialog(this,"Просмотр двигателей",true);
-//            JTextArea     textArea=new JTextArea();
-//            textArea.setText(ShopEngine.showAll());
-//            dialog.add(textArea);
-//            dialog.setSize(300,300);
-//            dialog.setVisible(true);
-//        });
+        chooseSearchButton.addActionListener((a)->{
+            SearchJDialog search=new SearchJDialog(this);
+            String[] val = search.getVal();
+            if(val!=null){
+                System.out.println("qwe");
+                allEnginePanel.removeAll();
+            int maxFuel= Integer.parseInt(val[4]);
+            int minFuel= Integer.parseInt(val[5]);
+            int maxPrice= Integer.parseInt(val[6]);
+            int minPrice= Integer.parseInt(val[7]);
+            int maxRashod= Integer.parseInt(val[8]);
+            int minRashod= Integer.parseInt(val[9]);
+                for(int i=0;i<alleng.size();i++){
+                Engine eng=alleng.get(i).getEng();
+                if(     eng.getName().equals(val[0])
+                        &&(eng.getType().equals(val[1])
+                           ||eng.getType().equals(val[2])
+                           ||eng.getType().equals(val[3]))
+                        && eng.getFuel()>minFuel
+                        && eng.getFuel()<maxFuel
+                        && eng.getPrice()>minPrice
+                        && eng.getPrice()<maxPrice
+                        && eng.getRashodTopliva()>minRashod
+                        && eng.getRashodTopliva()<maxRashod
+                )
+                {
+                    addOneItemToPanel(alleng.get(i));
+                    System.out.println("sas");
+                }
+                }
+            }
+            showAllEngine.setVisible(true);
+                scrollPane.revalidate();
+        });
 
         chooseRemoveBotton.addActionListener((a)->{
-            scrollPane.revalidate();
-            System.out.println("fjgh");
+            if(firstDel) {
+                chooseRemoveBotton.setText("Удалить");
+                for (ItemListEng i : alleng)
+                    i.setDeletVisible(true);
+                addAllEnginListToPanel();
+                firstDel=!firstDel;
+                chooseCancelButton.setVisible(true);
+            }else{
+
+                for (int i=0;i<alleng.size();i++){
+                    if(alleng.get(i).getDelet()){
+                        ShopEngine.remove(alleng.get(i).getEng());
+                        alleng.remove(i);
+                        i--;
+                    }
+                }
+                addAllEnginListToPanel();
+                chooseRemoveBotton.setText("Выбрать двигатели для удаления");
+                chooseCancelButton.setVisible(false);
+                firstDel=!firstDel;
+            }
+
+        });
+        chooseCancelButton.addActionListener((a)->{
+            chooseCancelButton.setVisible(false);
+            firstDel=true;
+            chooseRemoveBotton.setText("Выбрать двигатели для удаления");
+            for (ItemListEng i : alleng)
+                i.setDeletVisible(false);
+        });
+        showAllEngine.addActionListener((a)->{
+            addAllEnginListToPanel();
+            showAllEngine.setVisible(false);
         });
     }
 }
