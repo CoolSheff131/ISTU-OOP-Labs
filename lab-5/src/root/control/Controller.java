@@ -21,11 +21,11 @@ public class Controller {
     public Controller(){
 
     }
-    public void execute(InterfaceLoading loading, ShopEngine shop, MainPanelJFrame gr){
+    public void execute(InterfaceLoading loading, ShopEngine shop, MainJFrame gr){
         gr.getChooseRemoveBotton().setEnabled(false);
 
         gr.getChooseAddButton().addActionListener((a)->{
-            AddJDialog addMenu=new AddJDialog(gr);
+            AddJDialog addMenu = new AddJDialog(gr);
             addMenu.getAddEngineButton().addActionListener(e -> {
                 if(addMenu.getTxtfuel().getText().equals("")
                         ||addMenu.getTxtname().getText().equals("")
@@ -68,22 +68,29 @@ public class Controller {
         });
         gr.getNameSearch().addActionListener((a)->{
             NameSearchJDialog nameSearch = new NameSearchJDialog(gr);
-            nameSearch.getSearchB().addActionListener((A)->{
-                eng = loading.getEngine(shop,nameSearch.getSearchNameField().getText());
-                ItemListEng res = new ItemListEng(eng,f);
-                System.out.println("]po");
-                nameSearch.getRes().removeAll();
-                nameSearch.getRes().add(res);
-                nameSearch.getRes().revalidate();
-                nameSearch.getRes().repaint();
-                nameSearch.getScrollPane().revalidate();
+            nameSearch.getSearchB().addActionListener((A)-> {
+                        eng = loading.getEngine(shop, nameSearch.getSearchNameField().getText());
+                        nameSearch.getRes().removeAll();
+                        if (eng != null){
+                            ItemListEng res = new ItemListEng(eng, f);
+                            nameSearch.getRes().add(res);
+                            nameSearch.getRes().revalidate();
+                            nameSearch.getRes().repaint();
+                            nameSearch.getScrollPane().revalidate();
+                        }else{
+                            nameSearch.getRes().add(new Label("Двигатель не нашелся в магазине"));
+                            nameSearch.getRes().revalidate();
+                            nameSearch.getRes().repaint();
+                            nameSearch.getScrollPane().revalidate();
+                        }
+
             });
             nameSearch.getExitB().addActionListener((e)->{
                 nameSearch.dispose();
             });
         });
         gr.getAdvanceSearch().addActionListener((a)->{
-            SearchJDialog search=new SearchJDialog(gr);
+            SearchJDialog search = new SearchJDialog(gr);
             search.getClose().addActionListener(e -> {
                 search.dispose();
             });
@@ -133,8 +140,8 @@ public class Controller {
                                 && eng.getPrice() <= Integer.parseInt(search.getMaxPrice().getText())
                                 && eng.getRashodTopliva() >= Integer.parseInt(search.getMinRashod().getText())
                                 && eng.getRashodTopliva() <= Integer.parseInt(search.getMaxRashod().getText())
-                        ) {alleng.get(i).setVisible(true);
-                            System.out.println("][]][");}
+                        ) alleng.get(i).setVisible(true);
+
                     }
             gr.getShowAllEngine().setVisible(true);
             gr.getScrollPane().revalidate();
@@ -170,7 +177,7 @@ public class Controller {
         });
         gr.getChooseCancelButton().addActionListener((a)->{
             gr.getChooseCancelButton().setVisible(false);
-            firstDel=true;
+            firstDel = true;
             gr.getChooseRemoveBotton().setText("Выбрать двигатели для удаления");
             for (ItemListEng i : alleng)
                 i.setDeletVisible(false);
@@ -184,33 +191,41 @@ public class Controller {
         gr.getOpen().addActionListener(arg0 -> {
 
             JFileChooser fileopen = new JFileChooser();
-            int ret=fileopen.showOpenDialog(gr);
+            int ret = fileopen.showOpenDialog(gr);
             if(ret == JFileChooser.APPROVE_OPTION){
                 alleng.clear();
                 shop.clearEng();
                 File openedfile = fileopen.getSelectedFile();
-                try (BufferedReader br=new BufferedReader(new FileReader(openedfile))){
+                try (BufferedReader br = new BufferedReader(new FileReader(openedfile))){
                     String s;
                     while((s=br.readLine())!=null){
-
                         String type = s;
                         String name = br.readLine();
                         int fuel = Integer.parseInt(br.readLine());
                         int rashod = Integer.parseInt(br.readLine());
                         int price = Integer.parseInt(br.readLine());
-
                         switch (type){
-                            case "Дизельный двигатель":             eng= new Diesel(fuel, name, rashod, price);break;
-                            case "Двигатель внутреннего сгорания":  eng=new ICEngine(fuel, name, rashod, price); break;
-                            case "Реактивный двигатель":            eng=new JetEngine(fuel, name, rashod, price); break;
+                            case "Дизельный двигатель":             eng = new Diesel(fuel, name, rashod, price);break;
+                            case "Двигатель внутреннего сгорания":  eng = new ICEngine(fuel, name, rashod, price); break;
+                            case "Реактивный двигатель":            eng = new JetEngine(fuel, name, rashod, price); break;
                         }
                         if(eng!=null)
                             addsEngToList(eng,gr,shop);
                     }
+                System.out.println ("Файл открылся и считался");
                 } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    System.out.println("Файл не найден");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("Ошибка открытия файла");
+                } catch (Exception e){
+                    JDialog err = new JDialog(gr,"Ошибка",true);
+                    err.setSize(300,100);
+                    JLabel badRead = new JLabel("Ошибка считывания файла");
+                    badRead.setFont(f);
+                    err.add(badRead);
+                    err.setVisible(true);
+                    System.out.println("Ошибка считывания файла");
+
                 }
                 if(alleng.size()!=0)
                     gr.getChooseRemoveBotton().setEnabled(true);
@@ -218,7 +233,7 @@ public class Controller {
                     gr.getChooseRemoveBotton().setEnabled(false);
             }
 
-            System.out.println ("ActionListener.actionPerformed : open");
+
         });
         gr.getSave().addActionListener(arg0->{
             JFileChooser fileopen = new JFileChooser();
@@ -226,7 +241,7 @@ public class Controller {
             if(ret==JFileChooser.APPROVE_OPTION){
                 File openedfile = fileopen.getSelectedFile();
 
-                try (BufferedWriter bw=new BufferedWriter(new FileWriter(openedfile))){
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(openedfile))){
                     for(Engine i: shop.getEngines()){
                         bw.write(i.getType()+"\n");
                         bw.write(i.getName()+"\n");
@@ -241,7 +256,7 @@ public class Controller {
             }
         });
         gr.getSmallFont().addActionListener((a)->{
-            f=new Font("Comic Sans MS", Font.PLAIN, 15);
+            f = new Font("Comic Sans MS", Font.PLAIN, 15);
             for(ItemListEng i:alleng)
                 i.setMyFont(f);
         });
@@ -257,7 +272,7 @@ public class Controller {
         });
     }
     //Добавляет все двигатели в списке на панель
-    private void addAllEnginListToPanel(MainPanelJFrame gr){
+    private void addAllEnginListToPanel(MainJFrame gr){
        gr.getAllEnginePanel().removeAll();
         for(ItemListEng i:alleng){
             gr.getAllEnginePanel().add(i);
@@ -267,7 +282,7 @@ public class Controller {
         gr.getScrollPane().repaint();
     }
     //Добавляет двигатель в список и магазин
-    private void addsEngToList(Engine eng, MainPanelJFrame gr, ShopEngine shop){
+    private void addsEngToList(Engine eng, MainJFrame gr, ShopEngine shop){
         alleng.add(new ItemListEng(eng,f));
         shop.add(eng);
         addAllEnginListToPanel(gr);

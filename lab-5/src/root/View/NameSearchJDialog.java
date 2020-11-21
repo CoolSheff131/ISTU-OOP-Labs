@@ -41,7 +41,7 @@ public class NameSearchJDialog extends JDialog {
         res = new JPanel();
         scrollPane = new JScrollPane(res);
         scrollPane.setPreferredSize(new Dimension(600,100));
-        JPanel jij=new JPanel();
+        JPanel jij = new JPanel();
         jij.setLayout(new BoxLayout(jij,BoxLayout.Y_AXIS));
         jij.add(new Label("Результат"));
         jij.add(scrollPane);

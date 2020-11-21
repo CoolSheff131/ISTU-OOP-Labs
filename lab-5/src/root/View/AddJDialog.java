@@ -70,7 +70,7 @@ public class AddJDialog extends JDialog {
         addEngineButton = new JButton("Добавить Двигатель");
         closeAddPanelButton = new JButton("Отмена");
 
-        JPanel txtfields=new JPanel(new GridLayout(2,4,10,10));
+        JPanel txtfields = new JPanel(new GridLayout(2,4,10,10));
         txtname = new JTextField();
         txtfuel = new JTextField();
         txtprice = new JTextField();
@@ -95,10 +95,10 @@ public class AddJDialog extends JDialog {
         txtfields.add(txtprice);
         txtfields.add(txtfuel);
 
-        dis=new JRadioButton("Дизельный двигатель");
-        icEng=new JRadioButton("Двигатель внутреннего сгорания");
-        jetEng=new JRadioButton("Турбо двигатель");
-        JPanel groupRadio=new JPanel(new GridLayout(0, 1, 0, 5));
+        dis = new JRadioButton("Дизельный двигатель");
+        icEng = new JRadioButton("Двигатель внутреннего сгорания");
+        jetEng = new JRadioButton("Турбо двигатель");
+        JPanel groupRadio = new JPanel(new GridLayout(0, 1, 0, 5));
         groupRadio.setBorder(BorderFactory.createTitledBorder("Тип двигателя"));
 
         dis.setSelected(true);

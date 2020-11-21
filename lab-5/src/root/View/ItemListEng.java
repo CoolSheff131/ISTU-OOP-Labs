@@ -20,6 +20,7 @@ public class ItemListEng extends JPanel {
 
         JPanel param = new JPanel();
         param.setLayout(new GridLayout(2,2,100,10));
+
         setBorder(BorderFactory.createTitledBorder("Двигатель типа: "+eng.getType()));
         ((javax.swing.border.TitledBorder) getBorder()).
                 setTitleFont(f);
@@ -31,7 +32,7 @@ public class ItemListEng extends JPanel {
         viewEngName.setFont(f);
         viewEngPrice.setFont(f);
         viewEngRashod.setFont(f);
-        delet =new JCheckBox();
+        delet = new JCheckBox();
         delet.setVisible(false);
         param.add(viewEngName);
         param.add(viewEngFuel);

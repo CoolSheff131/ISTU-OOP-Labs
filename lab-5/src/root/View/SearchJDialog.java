@@ -51,23 +51,23 @@ public class SearchJDialog extends JDialog {
         setSize(650, 350);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        JPanel txtfield=new JPanel(new GridLayout(6,2,20,5));
+        JPanel txtfield = new JPanel(new GridLayout(6,2,20,5));
         txtfield.setBorder(BorderFactory.createTitledBorder("Характеристики"));
         search = new JButton("Поиск");
         close = new JButton("Отмена");
-        name=new JTextField();
+        name = new JTextField();
         name.setColumns(25);
         setResizable(false);
-        maxPrice=new JTextField();
-        minPrice=new JTextField();
+        maxPrice = new JTextField();
+        minPrice = new JTextField();
         maxPrice.setText("9999");
         minPrice.setText("0");
-        maxFuel=new JTextField();
-        minFuel=new JTextField();
+        maxFuel = new JTextField();
+        minFuel = new JTextField();
         maxFuel.setText("9999");
         minFuel.setText("0");
-        maxRashod=new JTextField();
-        minRashod=new JTextField();
+        maxRashod = new JTextField();
+        minRashod = new JTextField();
         maxRashod.setText("999999");
         minRashod.setText("0");
 
@@ -100,7 +100,7 @@ public class SearchJDialog extends JDialog {
         types.add(jeteng);
         txtfield.setVisible(true);
 
-        JPanel param=new JPanel();
+        JPanel param = new JPanel();
         param.setLayout(new BoxLayout(param,BoxLayout.Y_AXIS));
         param.add(new JLabel("Название Двигателя"));
         param.add(name);
